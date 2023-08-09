@@ -1,0 +1,21 @@
+This a Mess Management Application intended to manage a mess efficiently.
+This is a NextJs 13 project following the latest App router and Directory structure.
+To get appropriate code intellisense this project is build in Typescript
+
+app =  folder is the folder where all the codes and folders that is required by the framework stays.
+In app folder folders and files are kept in collocation strategy. in app folder different routes are
+separated by creating folder in the url segment name. folders can have sub folders also for url subsegments in different level.
+
+
+
+------layout.tsx = main page of the application. all other pages with assets are loaded with in this page
+------page.tsx = page shown when the root url of the server is requested.
+------global.css : Stores the css for the project which is called from anywhere of this project.
+
+
+gitignore = is the file to mention which files and folders we will not publish in git hub
+next.config.js = here the configuration related to nextjs project stays
+package.json =  here what are the dependency and dev dependency required for the project that is mentioned
+package.lock.json = details description and dependencies  of packages mentioned
+node_modules = node lib files are kept in this folder
+.next = files and folders produced by the framework after running the command dev / build required for optimization
