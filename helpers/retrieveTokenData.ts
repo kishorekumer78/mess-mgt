@@ -4,9 +4,9 @@ import jwt from "jsonwebtoken";
 export const retrieveTokenData = (request: NextRequest) => {
   try {
     const decodedToken = request.cookies.get("token")?.value || "";
-    const payload: any = jwt.verify(decodedToken, process.env.JWT_SECRET);
+    const payload = jwt.verify(decodedToken, process.env.JWT_SECRET);
     return payload.id;
-  } catch (error: any) {
+  } catch (error) {
     throw new Error(error.message);
   }
 };
