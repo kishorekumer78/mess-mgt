@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/db/dbConfig";
-import { AddOfficer } from "@/repositories/mongoRepo/offr.repository";
+import { AddOfficer, getAllOffrs } from "@/repositories/mongoRepo/offr.repository";
 
-connect();
-export const GET = async () => {
+export const GET = async (request: NextRequest) => {
 	try {
+		const result = await getAllOffrs();
+
+		if (result.success === true) {
+			return NextResponse.json(result, { status: 200 });
+		} else {
+			return NextResponse.json(result, { status: 500 });
+		}
 	} catch (error) {
 		return NextResponse.json({ message: error.message, success: false }, { status: 500 });
 	}

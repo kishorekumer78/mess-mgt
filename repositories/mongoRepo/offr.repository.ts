@@ -1,23 +1,34 @@
 import { connect } from "@/db/dbConfig";
+import dbConnect from "@/db/dbConnect";
 import validateMongoDbId from "@/helpers/validateMongoDbId";
 import Offr from "@/models/offr.model";
 
-connect();
+// connect();
+dbConnect();
 export const getAllOffrs = async () => {
 	try {
-		return await Offr.find();
-	} catch (error) {
-		return [];
+		const offrs = await Offr.find().sort({ bd: 1 });
+		if (offrs.length > 0) {
+			return { success: true, message: "Fetch data Successful", data: offrs };
+		} else {
+			return { success: true, message: "No data in the db", data: [] };
+		}
+	} catch (error: any) {
+		return { success: false, message: "Failed to load data", data: error.message };
 	}
 };
 
 export const getOffrById = async (id: string) => {
-	validateMongoDbId(id);
 	try {
+		validateMongoDbId(id);
 		const offr = await Offr.findById(id);
-		return offr;
+		if (offr) {
+			return { success: true, message: "Officer data fetching successful", data: offr };
+		} else {
+			return { success: false, message: "Officer with given id does not exist" };
+		}
 	} catch (error) {
-		return null;
+		return { success: false, message: "Failed to fetch Officer data", data: error.message };
 	}
 };
 
@@ -31,13 +42,25 @@ export const deleteOffrById = async (id: string) => {
 	}
 };
 
-export const updateOffr = async (offr: any) => {
-	validateMongoDbId(offr.id);
+export const updateOffr = async (id: string, offrData: any) => {
 	try {
-		const updatedOffr = await Offr.findOneAndUpdate({ bd: offr.bd }, offr);
-		return updatedOffr;
+		validateMongoDbId(id);
+		// check if offr exists
+		let foundOffr = await Offr.findById(id);
+
+		if (foundOffr) {
+			const updatedOffrData = await Offr.findByIdAndUpdate(id, offrData);
+			if (updatedOffrData) {
+				return { message: "Update successful", success: true, data: updatedOffrData };
+			} else {
+				return { message: "Update unsuccessful", success: false };
+			}
+		} else {
+			return { message: "Data not found in DB", success: false };
+		}
+		//const updatedOffr = await Offr.findOneAndUpdate({ bd: offr.bd }, offr);
 	} catch (error) {
-		return null;
+		return { message: "Update operation failed", success: false, data: error.message };
 	}
 };
 

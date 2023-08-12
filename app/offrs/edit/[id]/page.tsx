@@ -1,40 +1,67 @@
 "use client";
-import React, { useState } from "react";
-import Rank from "@/utilities/enums/rank.enum";
-import styles from "./style.module.css";
+import React, { useEffect, useState } from "react";
+import styles from "../../create/style.module.css";
 import axios from "axios";
-import { toast } from "react-hot-toast";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import Rank from "@/utilities/enums/rank.enum";
+import toast from "react-hot-toast";
 
-const CreateOfficerPage = (): React.ReactElement => {
+const getOffrDetails = async (id: string) => {
+	const url = `/api/offrs/${id}`;
+	const res = await axios.get(url);
+	if (res.data.success === true) {
+		return res.data.data;
+	} else return null;
+};
+
+const EditOfficerDetailsPage = ({ params }: { params: { id: string } }) => {
 	const router = useRouter();
 	const [offr, setOffr] = useState({
+		_id: "",
 		name: "",
-		rank: "NONE",
+		rank: "",
 		bd: "",
 		email: "",
 		mobile: "",
-		unit: ""
+		unit: "",
+		outStation: false,
+		messIn: false
 	});
+	// grab params
+	const { id } = params;
+
+	// set the user data brought from db to user state
+	useEffect(() => {
+		(async () => {
+			const data = await getOffrDetails(id);
+			if (data) {
+				setOffr({ ...data });
+			}
+		})();
+	}, [id]);
 
 	const handleSave = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		// prevent page refresh
 		e.preventDefault();
 		// send request to server to add data
 		try {
-			const res = await axios.post("/api/offrs", offr);
+			const res = await axios.put(`/api/offrs/${offr._id}`, offr, {
+				headers: {
+					"Cache-Control": "no-cache",
+					Pragma: "no-cache",
+					Expires: "0"
+				}
+			});
 			if (res.data.success === true) {
 				// show success toast
 				toast.success(res.data.message);
 				// redirect to offr list page
+				// router.push(`/offrs?${Math.random().toString()}`);
 				router.push("/offrs");
 			} else {
 				// on failure remain on the page
 				//show error toast
-				// errors in res.data.data
 				toast.error(res.data.message);
-				//  display errors
-				//TODO
 			}
 		} catch (error) {
 			console.log(error.message);
@@ -110,9 +137,41 @@ const CreateOfficerPage = (): React.ReactElement => {
 							onChange={(e) => setOffr({ ...offr, mobile: e.target.value })}
 						/>
 					</div>
+					<div className="form-control">
+						<label className="label cursor-pointer">
+							<span className="label-text">Out Station</span>
+							<input
+								type="checkbox"
+								checked={offr.outStation}
+								className="checkbox"
+								onChange={() =>
+									setOffr((prevOffr) => ({
+										...prevOffr,
+										outStation: !prevOffr.outStation
+									}))
+								}
+							/>
+						</label>
+					</div>
+					<div className="form-control">
+						<label className="label cursor-pointer">
+							<span className="label-text">Mess in</span>
+							<input
+								type="checkbox"
+								checked={offr.messIn}
+								className="checkbox"
+								onChange={() =>
+									setOffr((prevOffr) => ({
+										...prevOffr,
+										messIn: !prevOffr.messIn
+									}))
+								}
+							/>
+						</label>
+					</div>
 					<div className="text-center mt-5">
 						<button className="btn btn-primary w-full" onClick={(e) => handleSave(e)}>
-							Save
+							Update
 						</button>
 					</div>
 				</form>
@@ -123,4 +182,4 @@ const CreateOfficerPage = (): React.ReactElement => {
 	);
 };
 
-export default CreateOfficerPage;
+export default EditOfficerDetailsPage;

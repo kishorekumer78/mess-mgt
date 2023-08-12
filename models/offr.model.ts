@@ -1,10 +1,10 @@
-import { model, models, Schema } from 'mongoose';
-import Rank from '@/utilities/enums/rank.enum';
-
+import { model, models, Schema } from "mongoose";
+import Rank from "@/utilities/enums/rank.enum";
+const rankKeys = Object.keys(Rank);
 const offrSchema = new Schema({
 	rank: {
 		type: String,
-		enum: Rank,
+		enum: rankKeys,
 		required: true
 	},
 	name: {
@@ -28,5 +28,5 @@ const offrSchema = new Schema({
 	// dateOut: { type: Date }
 });
 
-const Offr = models.Offr || model('Offr', offrSchema);
+const Offr = models.Offr || model("Offr", offrSchema);
 export default Offr;

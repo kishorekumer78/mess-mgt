@@ -1,22 +1,29 @@
-'use client';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
-import { CiMemoPad, CiEdit } from 'react-icons/ci';
-import { GiShieldDisabled } from 'react-icons/gi';
+import React from "react";
+import axios from "axios";
+import ButtonLink from "../components/ButtonLink";
+import OfficerListActionLinks from "../components/OfficerListActionLinks";
+import Rank from "@/utilities/enums/rank.enum";
 
-const MembersPage = (): React.ReactElement => {
-	const [offrs, setOffrs] = useState([]);
-	// to fetch the list of offrs from db
-	useEffect(() => {}, []);
+const OfficersListPage = async (): Promise<React.ReactElement> => {
+	// let offrs: any[];
+	// const res = await axios.get(`${process.env.DOMAIN_NAME}/api/offrs`);
+	const data = await fetch(`${process.env.DOMAIN_NAME}/api/offrs`, { cache: "no-store" });
+	const res = await data.json();
+	const offrs = res.data;
+
+	//offrs = res;
+	// if (res.data.success && res.data.data.length > 0) {
+	// offrs = res.data.data;
+	// } else {
+	// 	offrs = [];
+	// }
 
 	return (
 		<>
 			<div className=" mt-5">
 				<h3 className="text-center font-semibold underline">List of Officers </h3>
 				<div className="text-end">
-					<Link href="/offrs/create" className="btn btn-primary">
-						+ Add Officer
-					</Link>
+					<ButtonLink href="/offrs/create">+ Add Officer</ButtonLink>
 				</div>
 				<table className="table">
 					<thead>
@@ -32,26 +39,22 @@ const MembersPage = (): React.ReactElement => {
 						</tr>
 					</thead>
 					<tbody>
-						<tr className="text-center">
-							<th>1</th>
-							<td>Gp Capt</td>
-							<td className="text-start">Karim Rahman Biddut</td>
-							<td>9023</td>
-							<td>FCTU BAF</td>
-							<td>biddut987@gmail.com</td>
-							<td>017111111111</td>
-							<td>
-								<Link href={'#'} className="tooltip mx-2" data-tip="Edit Officer Data">
-									<CiEdit size={24} />
-								</Link>
-								<Link href={'#'} className="tooltip mx-2" data-tip="Details">
-									<CiMemoPad size={24} />
-								</Link>
-								<Link href={'/'} className="tooltip mx-2" data-tip="Make Status Inactive">
-									<GiShieldDisabled size={24} color="red" />
-								</Link>
-							</td>
-						</tr>
+						{offrs &&
+							offrs.map((offr, i) => (
+								<tr className="text-center" key={i}>
+									<th>{i + 1}</th>
+									<td>{Rank[offr.rank]}</td>
+									<td className="text-start">{offr.name}</td>
+									<td>{offr.bd}</td>
+									<td>{offr.unit}</td>
+									<td>{offr.email}</td>
+									<td>{offr.mobile}</td>
+									<td>
+										<OfficerListActionLinks id={offr._id} />
+									</td>
+								</tr>
+							))}
+
 						<tr className="text-center">
 							<td></td>
 							<td></td>
@@ -69,4 +72,4 @@ const MembersPage = (): React.ReactElement => {
 	);
 };
 
-export default MembersPage;
+export default OfficersListPage;
