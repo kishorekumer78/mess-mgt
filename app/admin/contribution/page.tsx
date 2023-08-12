@@ -49,7 +49,7 @@ export default function ContributionPage(): React.ReactElement {
 	};
 	const handleUpdate = async () => {
 		// send req to api
-		const res = await axios.put("", contribution);
+		const res = await axios.put(`/api/admin/contribution/${contribution._id}`, contribution);
 		const result: ResponseType = res.data;
 		//On success reset contribution state, add new data to contributionList state and show success message
 		if (result.success) {
