@@ -1,12 +1,10 @@
-import { connect } from "@/db/dbConfig";
 import dbConnect from "@/db/dbConnect";
 import validateMongoDbId from "@/helpers/validateMongoDbId";
 import Offr from "@/models/offr.model";
 
-// connect();
-dbConnect();
 export const getAllOffrs = async () => {
 	try {
+		await dbConnect();
 		const offrs = await Offr.find().sort({ bd: 1 });
 		if (offrs.length > 0) {
 			return { success: true, message: "Fetch data Successful", data: offrs };
@@ -20,6 +18,7 @@ export const getAllOffrs = async () => {
 
 export const getOffrById = async (id: string) => {
 	try {
+		await dbConnect();
 		validateMongoDbId(id);
 		const offr = await Offr.findById(id);
 		if (offr) {
@@ -35,6 +34,7 @@ export const getOffrById = async (id: string) => {
 export const deleteOffrById = async (id: string) => {
 	validateMongoDbId(id);
 	try {
+		await dbConnect();
 		const deleteOffr = await Offr.findByIdAndDelete(id);
 		return deleteOffr;
 	} catch (error) {
@@ -45,6 +45,7 @@ export const deleteOffrById = async (id: string) => {
 export const updateOffr = async (id: string, offrData: any) => {
 	try {
 		validateMongoDbId(id);
+		await dbConnect();
 		// check if offr exists
 		let foundOffr = await Offr.findById(id);
 
@@ -66,6 +67,7 @@ export const updateOffr = async (id: string, offrData: any) => {
 
 export const AddOfficer = async (offr: any) => {
 	try {
+		await dbConnect();
 		// check if officer exists with bd no
 		const extOffr = await Offr.findOne({ bd: offr.bd });
 

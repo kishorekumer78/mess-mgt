@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "../../create/style.module.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import Rank from "@/utilities/enums/rank.enum";
+import { Rank } from "@/utilities/enums";
 import toast from "react-hot-toast";
 
 const getOffrDetails = async (id: string) => {
@@ -176,8 +176,6 @@ const EditOfficerDetailsPage = ({ params }: { params: { id: string } }) => {
 					</div>
 				</form>
 			</div>
-			<h2>{JSON.stringify(offr)}</h2> {/* 🔔 */}
-			{/* TODO remove */}
 		</>
 	);
 };
