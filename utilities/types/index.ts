@@ -1,4 +1,4 @@
-export type Officer = {
+export type OfficerType = {
 	_id: string | any;
 	name: string;
 	rank: string;
@@ -13,10 +13,10 @@ export type Officer = {
 export type ResponseType = {
 	message: string;
 	success: boolean;
-	data: Officer | any;
+	data?: OfficerType | ContributionType | any;
 };
 
-export type Contribution = {
+export type ContributionType = {
 	_id: string | any;
 	type: string;
 	amount: number;

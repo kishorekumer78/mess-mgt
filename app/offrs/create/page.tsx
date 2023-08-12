@@ -1,10 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import Rank from "@/utilities/enums/rank.enum";
+import { Rank } from "@/utilities/enums";
 import styles from "./style.module.css";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const CreateOfficerPage = (): React.ReactElement => {
 	const router = useRouter();
@@ -27,6 +27,7 @@ const CreateOfficerPage = (): React.ReactElement => {
 				// show success toast
 				toast.success(res.data.message);
 				// redirect to offr list page
+				// router.push(`/offrs?num=${Math.random().toFixed().toString()}`);
 				router.push("/offrs");
 			} else {
 				// on failure remain on the page
@@ -117,8 +118,6 @@ const CreateOfficerPage = (): React.ReactElement => {
 					</div>
 				</form>
 			</div>
-			<h2>{JSON.stringify(offr)}</h2> {/* 🔔 */}
-			{/* TODO remove */}
 		</>
 	);
 };

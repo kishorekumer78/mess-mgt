@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { connect } from "@/db/dbConfig";
 import { AddOfficer, getAllOffrs } from "@/repositories/mongoRepo/offr.repository";
 
 export const GET = async (request: NextRequest) => {

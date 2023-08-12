@@ -1,22 +1,13 @@
 import React from "react";
-import axios from "axios";
 import ButtonLink from "../components/ButtonLink";
 import OfficerListActionLinks from "../components/OfficerListActionLinks";
-import Rank from "@/utilities/enums/rank.enum";
+import { Rank } from "@/utilities/enums";
+import { OfficerType } from "@/utilities/types";
 
 const OfficersListPage = async (): Promise<React.ReactElement> => {
-	// let offrs: any[];
-	// const res = await axios.get(`${process.env.DOMAIN_NAME}/api/offrs`);
 	const data = await fetch(`${process.env.DOMAIN_NAME}/api/offrs`, { cache: "no-store" });
 	const res = await data.json();
-	const offrs = res.data;
-
-	//offrs = res;
-	// if (res.data.success && res.data.data.length > 0) {
-	// offrs = res.data.data;
-	// } else {
-	// 	offrs = [];
-	// }
+	const offrs: OfficerType[] = res.data;
 
 	return (
 		<>
