@@ -17,8 +17,9 @@ export default function ContributionPage(): React.ReactElement {
 	useEffect(() => {
 		(async () => {
 			const res = await axios.get("/api/admin/contribution");
+			const data = res.data.data;
 			if (res.data.success) {
-				setContributionList([res.data.data]);
+				setContributionList([...data]);
 			}
 		})();
 	}, []);
@@ -47,8 +48,9 @@ export default function ContributionPage(): React.ReactElement {
 			toast.error(result.message);
 		}
 	};
-	const handleUpdate = async () => {
+	const handleUpdate = async (e) => {
 		// send req to api
+		e.preventDefault();
 		const res = await axios.put(`/api/admin/contribution/${contribution._id}`, contribution);
 		const result: ResponseType = res.data;
 		//On success reset contribution state, add new data to contributionList state and show success message
@@ -80,7 +82,7 @@ export default function ContributionPage(): React.ReactElement {
 							</tr>
 						</thead>
 						<tbody>
-							{contributionList &&
+							{contributionList.length > 0 &&
 								contributionList.map((cont, i) => (
 									<tr className="text-center" key={i}>
 										<th>{i + 1}</th>
@@ -120,9 +122,7 @@ export default function ContributionPage(): React.ReactElement {
 							placeholder="Name"
 							className="input input-bordered w-full "
 							value={contribution.type}
-							onChange={(e) =>
-								setContribution({ ...contribution, type: e.target.value })
-							}
+							onChange={(e) => setContribution({ ...contribution, type: e.target.value })}
 						/>
 					</div>
 					<div className="form-control w-full">

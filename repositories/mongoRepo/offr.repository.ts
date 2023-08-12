@@ -50,7 +50,7 @@ export const updateOffr = async (id: string, offrData: any) => {
 		let foundOffr = await Offr.findById(id);
 
 		if (foundOffr) {
-			const updatedOffrData = await Offr.findByIdAndUpdate(id, offrData);
+			const updatedOffrData = await Offr.findByIdAndUpdate(id, offrData, { new: true });
 			if (updatedOffrData) {
 				return { message: "Update successful", success: true, data: updatedOffrData };
 			} else {

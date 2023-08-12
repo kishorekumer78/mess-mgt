@@ -2,7 +2,7 @@ import dbConnect from "@/db/dbConnect";
 import validateMongoDbId from "@/helpers/validateMongoDbId";
 import Contribution from "@/models/contribution.model";
 import { Msg } from "@/utilities/enums";
-import { ContributionType } from "@/utilities/types";
+import { ContributionType, ResponseType } from "@/utilities/types";
 
 export const getAllContributions = async () => {
 	try {
@@ -14,7 +14,7 @@ export const getAllContributions = async () => {
 			return { success: true, message: Msg.DATA_DB_EMPTY, data: [] };
 		}
 	} catch (error: any) {
-		return { success: false, message: Msg.DATA_LOAD_FAIL, data: error.message };
+		return { success: false, message: Msg.DATA_FETCH_FAIL, data: error.message };
 	}
 };
 
@@ -33,39 +33,41 @@ export const getAllContributions = async () => {
 // 	}
 // };
 
-// export const deleteOffrById = async (id: string) => {
-// 	validateMongoDbId(id);
-// 	try {
-// 		await dbConnect();
-// 		const deleteOffr = await Offr.findByIdAndDelete(id);
-// 		return deleteOffr;
-// 	} catch (error) {
-// 		return null;
-// 	}
-// };
+export const deleteOffrById = async (id: string) => {
+	try {
+		validateMongoDbId(id);
+		await dbConnect();
+		const deleteCon = await Contribution.findByIdAndDelete(id);
+		return { success: true, message: Msg.DATA_DELETE_SUCCESS, data: deleteCon };
+	} catch (error) {
+		return { success: false, message: Msg.DATA_DELETE_FAIL, data: error.message };
+	}
+};
 
-// export const updateOffr = async (id: string, offrData: any) => {
-// 	try {
-// 		validateMongoDbId(id);
-// 		await dbConnect();
-// 		// check if offr exists
-// 		let foundOffr = await Offr.findById(id);
+export const updateContribution = async (id: string, contributionData: ContributionType): Promise<ResponseType> => {
+	try {
+		validateMongoDbId(id);
+		await dbConnect();
+		// check if contribution exists
+		let foundCon = await Contribution.findById(id);
 
-// 		if (foundOffr) {
-// 			const updatedOffrData = await Offr.findByIdAndUpdate(id, offrData);
-// 			if (updatedOffrData) {
-// 				return { message: "Update successful", success: true, data: updatedOffrData };
-// 			} else {
-// 				return { message: "Update unsuccessful", success: false };
-// 			}
-// 		} else {
-// 			return { message: "Data not found in DB", success: false };
-// 		}
-// 		//const updatedOffr = await Offr.findOneAndUpdate({ bd: offr.bd }, offr);
-// 	} catch (error) {
-// 		return { message: "Update operation failed", success: false, data: error.message };
-// 	}
-// };
+		if (foundCon) {
+			delete contributionData._id;
+
+			const updatedConData = await Contribution.findByIdAndUpdate(id, contributionData, { new: true });
+
+			if (updatedConData) {
+				return { message: Msg.DATA_UPDATE_SUCCESS, success: true, data: updatedConData };
+			} else {
+				return { message: Msg.DATA_UPDATE_FAIL, success: false };
+			}
+		} else {
+			return { message: Msg.DATA_NOT_FOUND, success: false };
+		}
+	} catch (error) {
+		return { message: "Update operation failed", success: false, data: error.message };
+	}
+};
 
 export const AddContribution = async (contribution: ContributionType) => {
 	try {
@@ -77,11 +79,11 @@ export const AddContribution = async (contribution: ContributionType) => {
 			return { success: false, message: Msg.DATA_EXIST };
 		} else {
 			// contribution does not exist in db . so add contribution
-			const { type, amount } = contribution;
-			const savedContribution = await Contribution.create({ type, amount });
+			delete contribution._id; //removing _id field
+			const savedContribution = await Contribution.create(contribution);
 			return {
 				success: true,
-				message: Msg.DATA_SUCCESS,
+				message: Msg.DATA_ADD_SUCCESS,
 				data: savedContribution
 			};
 		}
