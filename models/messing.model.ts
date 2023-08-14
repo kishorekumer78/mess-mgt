@@ -30,5 +30,4 @@ const dailyMessingSchema = new Schema({
 	offr: { type: Schema.Types.ObjectId, ref: 'Offr' }
 });
 const DailyMessing = models.Messing || model('DailyMessing', dailyMessingSchema);
-
 export default DailyMessing;

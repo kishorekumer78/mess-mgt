@@ -10,7 +10,7 @@ export enum Msg {
 	DATA_EXIST = "Data Already Exists",
 	DATA_NOT_FOUND = "Data Not Found",
 	DATA_DB_EMPTY = "Database Empty",
-	SERVER = "Internal Server Error"
+	SERVER_ERROR = "Internal Server Error"
 }
 export enum Rank {
 	ACM = "Air Chief Marshal",

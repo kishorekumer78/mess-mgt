@@ -1,13 +1,13 @@
 export type OfficerType = {
-	_id: string | any;
+	_id?: string | any;
 	name: string;
 	rank: string;
 	bd: number;
 	email: string;
 	mobile: string;
 	unit: string;
-	outStation: boolean;
-	messIn: boolean;
+	outStation?: boolean;
+	messIn?: boolean;
 };
 
 export type ResponseType = {

@@ -1,4 +1,4 @@
-import { getOffrById, updateOffr } from "@/repositories/mongoRepo/offr.repository";
+import { deleteOffrById, getOffrById, updateOffr } from "@/repo/mongoRepo/offr.repository";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (request: NextRequest, context: { params: { id: string } }) => {
@@ -29,6 +29,20 @@ export const PUT = async (request: NextRequest, context: { params: { id: string 
 			return NextResponse.json(result, { status: 200 });
 		} else {
 			return NextResponse.json(result, { status: 400 });
+		}
+	} catch (error) {
+		return NextResponse.json({ message: error.message, success: false }, { status: 500 });
+	}
+};
+
+export const DELETE = async (request: NextRequest, context: { params: { id: string } }) => {
+	try {
+		const { id } = context.params;
+		const result = await deleteOffrById(id);
+		if (result.success) {
+			return NextResponse.json(result, { status: 200 });
+		} else {
+			return NextResponse.json(result);
 		}
 	} catch (error) {
 		return NextResponse.json({ message: error.message, success: false }, { status: 500 });

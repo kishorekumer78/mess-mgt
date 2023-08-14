@@ -1,5 +1,5 @@
 import { model, models, Schema } from "mongoose";
-import Rank from "@/utilities/enums/rank.enum";
+import { Rank } from "@/utilities/enums";
 const rankKeys = Object.keys(Rank);
 const offrSchema = new Schema({
 	rank: {

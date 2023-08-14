@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AddContribution, getAllContributions } from "@/repositories/mongoRepo/contribution.repo";
+import { AddContribution, getAllContributions } from "@/repo/mongoRepo/contribution.repo";
 import { ResponseType } from "@/utilities/types";
 import { Msg } from "@/utilities/enums";
 

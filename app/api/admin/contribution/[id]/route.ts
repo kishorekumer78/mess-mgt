@@ -1,4 +1,4 @@
-import { updateContribution } from "@/repositories/mongoRepo/contribution.repo";
+import { updateContribution } from "@/repo/mongoRepo/contribution.repo";
 import { NextRequest, NextResponse } from "next/server";
 
 // export const GET = async (request: NextRequest, context: { params: { id: string } }) => {

@@ -1,6 +1,7 @@
 import dbConnect from "@/db/dbConnect";
 import validateMongoDbId from "@/helpers/validateMongoDbId";
 import Offr from "@/models/offr.model";
+import { Msg } from "@/utilities/enums";
 
 export const getAllOffrs = async () => {
 	try {
@@ -32,13 +33,17 @@ export const getOffrById = async (id: string) => {
 };
 
 export const deleteOffrById = async (id: string) => {
-	validateMongoDbId(id);
 	try {
+		validateMongoDbId(id);
 		await dbConnect();
 		const deleteOffr = await Offr.findByIdAndDelete(id);
-		return deleteOffr;
+		if (deleteOffr) {
+			return { success: false, message: Msg.DATA_DELETE_SUCCESS, data: deleteOffr };
+		} else {
+			return { success: false, message: Msg.DATA_DELETE_FAIL };
+		}
 	} catch (error) {
-		return null;
+		return { success: false, message: Msg.SERVER_ERROR, data: error.message };
 	}
 };
 
@@ -52,16 +57,16 @@ export const updateOffr = async (id: string, offrData: any) => {
 		if (foundOffr) {
 			const updatedOffrData = await Offr.findByIdAndUpdate(id, offrData, { new: true });
 			if (updatedOffrData) {
-				return { message: "Update successful", success: true, data: updatedOffrData };
+				return { message: Msg.DATA_UPDATE_SUCCESS, success: true, data: updatedOffrData };
 			} else {
-				return { message: "Update unsuccessful", success: false };
+				return { message: Msg.DATA_UPDATE_FAIL, success: false };
 			}
 		} else {
-			return { message: "Data not found in DB", success: false };
+			return { message: Msg.DATA_NOT_FOUND, success: false };
 		}
 		//const updatedOffr = await Offr.findOneAndUpdate({ bd: offr.bd }, offr);
 	} catch (error) {
-		return { message: "Update operation failed", success: false, data: error.message };
+		return { message: Msg.SERVER_ERROR, success: false, data: error.message };
 	}
 };
 
@@ -72,13 +77,14 @@ export const AddOfficer = async (offr: any) => {
 		const extOffr = await Offr.findOne({ bd: offr.bd });
 
 		if (extOffr) {
-			return { success: false, message: "Officer already exists" };
+			return { success: false, message: Msg.DATA_EXIST, data: {} };
 		} else {
 			// offr does not exist in db . so add offr
 			const savedOffr = await Offr.create(offr);
-			return { success: true, message: "Officer data added successfully", data: savedOffr };
+
+			return { success: true, message: Msg.DATA_ADD_SUCCESS, data: savedOffr };
 		}
 	} catch (error: any) {
-		return { success: false, message: "Failed to add Officer data", data: error.message };
+		return { success: false, message: Msg.SERVER_ERROR, data: error.message };
 	}
 };

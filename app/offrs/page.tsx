@@ -1,20 +1,25 @@
 import React from "react";
-import ButtonLink from "../components/ButtonLink";
-import OfficerListActionLinks from "../components/OfficerListActionLinks";
+import Link from "next/link";
+import { CiMemoPad } from "react-icons/ci";
+import { GiShieldDisabled } from "react-icons/gi";
 import { Rank } from "@/utilities/enums";
 import { OfficerType } from "@/utilities/types";
+import { getAllOfficers } from "@/helpers/offr";
 
-const OfficersListPage = async (): Promise<React.ReactElement> => {
-	const data = await fetch(`${process.env.DOMAIN_NAME}/api/offrs`, { cache: "no-store" });
-	const res = await data.json();
-	const offrs: OfficerType[] = res.data;
+const OfficersListPage = async () => {
+	let offrs: OfficerType[] = [];
+	const res = await getAllOfficers();
+
+	if (res.success) {
+		offrs = res.data;
+	}
 
 	return (
 		<>
 			<div className=" mt-5">
 				<h3 className="text-center font-semibold underline">List of Officers </h3>
 				<div className="text-end">
-					<ButtonLink href="/offrs/create">+ Add Officer</ButtonLink>
+					<Link href={`/offrs/create`}>+ Add Officer</Link>
 				</div>
 				<table className="table">
 					<thead>
@@ -30,7 +35,7 @@ const OfficersListPage = async (): Promise<React.ReactElement> => {
 						</tr>
 					</thead>
 					<tbody>
-						{offrs &&
+						{offrs.length > 0 &&
 							offrs.map((offr, i) => (
 								<tr className="text-center" key={i}>
 									<th>{i + 1}</th>
@@ -41,7 +46,12 @@ const OfficersListPage = async (): Promise<React.ReactElement> => {
 									<td>{offr.email}</td>
 									<td>{offr.mobile}</td>
 									<td>
-										<OfficerListActionLinks id={offr._id} />
+										<Link href={`/offrs/${offr._id}`} className="tooltip mx-2" data-tip="Details">
+											<CiMemoPad size={24} />
+										</Link>
+										<Link href={"#"} className="tooltip mx-2" data-tip="Make Status Inactive">
+											<GiShieldDisabled size={24} color="red" />
+										</Link>
 									</td>
 								</tr>
 							))}
