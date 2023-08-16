@@ -3,9 +3,9 @@ export type OfficerType = {
 	name: string;
 	rank: string;
 	bd: number;
-	email: string;
-	mobile: string;
-	unit: string;
+	email?: string;
+	mobile?: string;
+	unit?: string;
 	outStation?: boolean;
 	messIn?: boolean;
 };
@@ -20,4 +20,13 @@ export type ContributionType = {
 	_id: string | any;
 	type: string;
 	amount: number;
+};
+
+export type DailyMessingType = {
+	date?: Date;
+	offr?: string | any;
+	breakfast?: number;
+	lunch?: number;
+	dinner?: number;
+	_id?: string | any;
 };

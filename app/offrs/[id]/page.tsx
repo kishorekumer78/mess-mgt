@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { Rank } from "@/utilities/enums";
 import toast from "react-hot-toast";
 import { OfficerType } from "@/utilities/types";
-import { deleteOffr, getOfficerDetails, updateOffr } from "@/helpers/offr";
+import { deleteOffr, getOfficerDetails, updateOffr } from "@/lib/offr";
 
 const OfficerUpdatePage = ({ params }: { params: { id: string } }) => {
 	const { id } = params;

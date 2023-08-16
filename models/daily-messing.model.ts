@@ -1,4 +1,4 @@
-import { Schema, models, model } from 'mongoose';
+import { Schema, models, model } from "mongoose";
 
 // const messingSchema = new Schema({
 //   // month: { type: Number, required: true },
@@ -27,7 +27,7 @@ const dailyMessingSchema = new Schema({
 	breakfast: { type: Number, default: 0 },
 	lunch: { type: Number, default: 0 },
 	dinner: { type: Number, default: 0 },
-	offr: { type: Schema.Types.ObjectId, ref: 'Offr' }
+	offr: { type: Schema.Types.ObjectId, ref: "Offr" }
 });
-const DailyMessing = models.Messing || model('DailyMessing', dailyMessingSchema);
+const DailyMessing = models.Messing || model("DailyMessing", dailyMessingSchema);
 export default DailyMessing;

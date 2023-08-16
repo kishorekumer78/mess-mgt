@@ -4,7 +4,7 @@ import { Rank } from "@/utilities/enums";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { OfficerType, ResponseType } from "@/utilities/types";
-import { createOffr } from "@/helpers/offr";
+import { createOffr } from "@/lib/offr";
 
 const CreateOfficerPage = (): React.ReactElement => {
 	const router = useRouter();
@@ -14,7 +14,9 @@ const CreateOfficerPage = (): React.ReactElement => {
 		bd: 0,
 		email: "",
 		mobile: "",
-		unit: ""
+		unit: "",
+		outStation: false,
+		messIn: false
 	});
 
 	const handleSave = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

@@ -4,7 +4,7 @@ import { CiMemoPad } from "react-icons/ci";
 import { GiShieldDisabled } from "react-icons/gi";
 import { Rank } from "@/utilities/enums";
 import { OfficerType } from "@/utilities/types";
-import { getAllOfficers } from "@/helpers/offr";
+import { getAllOfficers } from "@/lib/offr";
 
 const OfficersListPage = async () => {
 	let offrs: OfficerType[] = [];

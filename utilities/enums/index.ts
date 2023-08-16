@@ -22,7 +22,22 @@ export enum Rank {
 	SQN_LDR = "Sqn Ldr",
 	FLT_LT = "Flt Lt",
 	FLG_OFFR = "Flg Offr",
+	CIV = "Civ",
 	NONE = "Unknown"
+}
+export enum Month {
+	Jan = "0",
+	Feb = "1",
+	Mar = "2",
+	Apr = "3",
+	May = "4",
+	Jun = "5",
+	Jul = "6",
+	Aug = "7",
+	Sep = "8",
+	Oct = "9",
+	Nov = "10",
+	Dec = "11"
 }
 
 // ✅ For STRING Enum

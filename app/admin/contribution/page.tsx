@@ -1,5 +1,5 @@
 "use client";
-import { addNewContribution, getAllContributions, updateContribution } from "@/helpers/contribution.helper";
+import { addNewContribution, getAllContributions, updateContribution } from "@/lib/contribution.helper";
 import { ContributionType, ResponseType } from "@/utilities/types";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
