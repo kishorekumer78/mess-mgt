@@ -1,11 +1,11 @@
-"use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { AiOutlineShoppingCart } from "react-icons/ai";
-import Image from "next/image";
-import axios from "axios";
-import { toast } from "react-hot-toast";
+'use client';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
+import Image from 'next/image';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 const Menu = (): React.ReactElement => {
 	// TODO: username set is not implemented correctly
@@ -13,7 +13,7 @@ const Menu = (): React.ReactElement => {
 	// TODO: implement state management for username && layout for login and sign up + layout for admin + layout for users
 	let currentPath = usePathname();
 	const router = useRouter();
-	const [username, setUsername] = useState("");
+	const [username, setUsername] = useState('');
 
 	// useEffect(() => {
 	//   (async () => {
@@ -28,51 +28,29 @@ const Menu = (): React.ReactElement => {
 	// }, []);
 
 	const handleLogout = async () => {
-		await axios.get("/api/logout");
-		setUsername("");
-		toast.success("Logout Successful");
-		router.push("/login");
+		await axios.get('/api/logout');
+		setUsername('');
+		toast.success('Logout Successful');
+		router.push('/login');
 	};
 	return (
-		<div className="navbar bg-gray-100 w-9/12 mx-auto">
+		<div className="navbar bg-gray-100  mx-auto">
 			<div className="flex-1">
-				<Link
-					className={`btn btn-ghost normal-case ${currentPath === "/daily-messing" ? "btn-active" : ""}`}
-					href="/daily-messing"
-				>
-					Daily Messing
+				<Link className={`btn btn-ghost uppercase ${currentPath === '/' ? 'btn-active' : ''}`} href="/">
+					Home
 				</Link>
+
 				<Link
-					className={`btn btn-ghost normal-case  ${currentPath === "/mess-bill" ? "btn-active" : ""}`}
-					href="/mess-bill"
-				>
-					Mess Bill
-				</Link>
-				<Link
-					className={`btn btn-ghost normal-case  ${currentPath === "/offrs" ? "btn-active" : ""}`}
+					className={`btn btn-ghost uppercase  ${currentPath === '/offrs' ? 'btn-active' : ''}`}
 					href="/offrs"
 				>
-					OFFRS
+					Offrs
 				</Link>
 				<Link
-					className={`btn btn-ghost normal-case  ${currentPath === "/login" ? "btn-active" : ""}`}
-					href="/login"
+					className={`btn btn-ghost uppercase  ${currentPath === '/back-office' ? 'btn-active' : ''}`}
+					href="/back-office"
 				>
-					Login
-				</Link>
-				<Link
-					className={`btn btn-ghost normal-case  ${currentPath === "/signup" ? "btn-active" : ""}`}
-					href="/signup"
-				>
-					Signup
-				</Link>
-				<Link
-					className={`btn btn-ghost normal-case  ${
-						currentPath === "/admin/contribution" ? "btn-active" : ""
-					}`}
-					href="/admin/contribution"
-				>
-					Contribution
+					Back Office
 				</Link>
 			</div>
 			<div className="flex-none">

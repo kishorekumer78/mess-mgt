@@ -4,7 +4,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
-import button from "@/app/components/ButtonLink";
+
 
 const SignupPage = () => {
 	const router = useRouter();

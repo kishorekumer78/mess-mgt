@@ -27,7 +27,7 @@ const CreateOfficerPage = (): React.ReactElement => {
 			router.push(`/offrs?${Math.random().toString()}`);
 		} else {
 			toast.error(res.message);
-			console.log(res.data); //TODO remove
+			//console.log(res.data); //TODO remove
 		}
 	};
 

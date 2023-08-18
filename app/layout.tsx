@@ -1,8 +1,8 @@
+"use client";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import Menu from "@/components/Menu";
-
+import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -14,9 +14,9 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<body className={inter.className}>
+				<ProgressBar />
 				<Toaster />
-				<Menu />
-				<div className="w-9/12 mx-auto">{children}</div>
+				<div className="">{children}</div>
 			</body>
 		</html>
 	);

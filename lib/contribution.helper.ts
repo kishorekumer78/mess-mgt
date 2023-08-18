@@ -1,6 +1,6 @@
 import { ContributionType, ResponseType } from "@/utilities/types";
 
-const apiUrl = "/api/admin/contribution";
+const apiUrl = `${process.env.API_URL}/admin/contribution`;
 
 export const getAllContributions = async (): Promise<ResponseType> => {
 	const res = await fetch(`${apiUrl}`, { cache: "no-store" });

@@ -19,3 +19,49 @@ package.json =  here what are the dependency and dev dependency required for the
 package.lock.json = details description and dependencies  of packages mentioned
 node_modules = node lib files are kept in this folder
 .next = files and folders produced by the framework after running the command dev / build required for optimization
+
+
+
+const billId = ...; // The ID of the bill document you want to modify
+const newMiscBill = {
+    type: "Some Type",
+    amount: 100 // Amount of the bill
+};
+
+BillModel.findByIdAndUpdate(
+    billId,
+    { $push: { miscBills: newMiscBill } },
+    { new: true, useFindAndModify: false },
+    (err, updatedBill) => {
+        if (err) {
+            console.error("Error adding miscBill:", err);
+        } else {
+            console.log("Updated Bill:", updatedBill);
+        }
+    }
+);
+
+
+
+
+
+const billId = ...; // The ID of the bill document you want to modify
+const miscBillIndex = 0; // Index of the miscBill you want to edit
+const updatedMiscBill = {
+    type: "New Type",
+    amount: 150 // Updated amount of the bill
+};
+
+BillModel.findOneAndUpdate(
+    { _id: billId, "miscBills._id": miscBillIndex },
+    { $set: { "miscBills.$.type": updatedMiscBill.type, "miscBills.$.amount": updatedMiscBill.amount } },
+    { new: true, useFindAndModify: false },
+    (err, updatedBill) => {
+        if (err) {
+            console.error("Error updating miscBill:", err);
+        } else {
+            console.log("Updated Bill:", updatedBill);
+        }
+    }
+);
+

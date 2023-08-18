@@ -1,9 +1,9 @@
-import { model, models, Schema } from 'mongoose';
+import { model, models, Schema } from "mongoose";
 
 const billSchema = new Schema({
 	offr: {
 		type: Schema.Types.ObjectId,
-		ref: 'Offr'
+		ref: "Offr"
 	},
 	bd: { type: Number },
 	bf: { type: Number, default: 0 }, // less paid in last month
@@ -15,20 +15,15 @@ const billSchema = new Schema({
 	messing: { type: Number, default: 0 },
 	extraMessing: { type: Number, default: 0 },
 	batmanCharge: { type: Number, default: 0 },
-	contributions: [
-		{
-			type: Schema.Types.ObjectId,
-			ref: 'Contribution'
-		}
-	],
-	miscBills: [
-		{
-			type: String,
-			amount: Number
-		}
-	]
+	contributions: { type: Number, default: 0 },
+	accommodation: { type: Number },
+	miscBills: [{ type: String, amount: Number }],
+	total: { type: Number },
+	payment: { type: Number },
+	emailSent: { type: Boolean, default: false },
+	status: { type: String }
 });
 
-const Bill = models.Bill || model('Bill', billSchema);
+const Bill = models.Bill || model("Bill", billSchema);
 
 export default Bill;

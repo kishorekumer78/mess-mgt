@@ -30,3 +30,26 @@ export type DailyMessingType = {
 	dinner?: number;
 	_id?: string | any;
 };
+
+export type MessBill = {
+	_id?: any;
+	offr: string | OfficerType;
+	bd?: number;
+	bf?: number; // less paid in last month
+	cf?: number; // extra paid in last month
+	duration?: {
+		start: Date;
+		end: Date;
+	};
+	messing?: number;
+	accommodation?: number;
+	extraMessing?: number;
+	batmanCharge?: number;
+	contributions?: ContributionType[] | number;
+	miscBills?: { type: string; amount: Number }[];
+	total?: number;
+	payment?: number;
+	emailSent?: boolean;
+	status?: string;
+	created?: boolean;
+};

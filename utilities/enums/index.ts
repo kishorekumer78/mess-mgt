@@ -40,6 +40,14 @@ export enum Month {
 	Dec = "11"
 }
 
+export enum BillStatus {
+	"N/A" = 0,
+	GENERATED = 1,
+	COMPLETED = 2,
+	EMAIL_SENT = 3,
+	PAID = 4
+}
+
 // ✅ For STRING Enum
 // enum StringEnum {
 // 	Small = 'S',

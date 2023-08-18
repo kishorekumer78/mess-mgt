@@ -46,7 +46,7 @@ export default function ContributionPage(): React.ReactElement {
 			toast.success(res.message);
 		} else {
 			toast.error(res.message);
-			console.log(res.data); //TODO remove
+			//console.log(res.data); //TODO remove
 		}
 	};
 	const handleUpdate = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -70,7 +70,7 @@ export default function ContributionPage(): React.ReactElement {
 			toast.success(res.message);
 		} else {
 			toast.error(res.message);
-			console.log(res.data); //TODO remove
+			//console.log(res.data); //TODO remove
 		}
 	};
 	return (

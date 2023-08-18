@@ -1,27 +1,27 @@
-"use client";
-import "react-datepicker/dist/react-datepicker.css";
-import React, { useEffect, useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
-import { DailyMessingType, OfficerType } from "@/utilities/types";
-import { Month, Rank } from "@/utilities/enums";
-import { getAllOfficersMinDataFromRank } from "@/lib/offr";
+'use client';
+import 'react-datepicker/dist/react-datepicker.css';
+import React, { useEffect, useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
+import { DailyMessingType, OfficerType } from '@/utilities/types';
+import { Month, Rank } from '@/utilities/enums';
+import { getAllOfficers } from '@/lib/offr';
 import {
 	calculateTotalBill,
 	findLastDayOfMOnth,
 	formatDate,
 	incrementDay,
 	prepareDailyMessingPayload
-} from "@/utilities/misc";
-import { addDailyMessings, getDailyMessings } from "@/lib/daily-messing";
-import toast from "react-hot-toast";
+} from '@/utilities/misc';
+import { addDailyMessings, getDailyMessings } from '@/lib/daily-messing';
+import toast from 'react-hot-toast';
 
 export default function MessingPage() {
 	const currentYear = new Date().getFullYear();
 	const prevYear = currentYear - 1;
 	const [offrs, setOffrs] = useState<OfficerType[]>([]);
-	const [selectedRank, setSelectedRank] = useState("NONE"); // basing on this fetch officers data from api and fill the select box
-	const [selectedOffr, setSelectedOffr] = useState<OfficerType>({ rank: "NONE", name: "", bd: 0 });
-	const [month, setMonth] = useState("Jan");
+	const [selectedRank, setSelectedRank] = useState('NONE'); // basing on this fetch officers data from api and fill the select box
+	const [selectedOffr, setSelectedOffr] = useState<OfficerType>({ rank: 'NONE', name: '', bd: 0 });
+	const [month, setMonth] = useState('Jan');
 	const [year, setYear] = useState(currentYear);
 	const [startDate, setStartDate] = useState(new Date(year, Month[month], 1, 8, 0, 0));
 
@@ -30,18 +30,19 @@ export default function MessingPage() {
 	const [totalBill, setTotalBill] = useState<number>(0);
 
 	const handleSelectRank = async (rank: string) => {
-		if (rank && rank !== "NONE") {
-			setSelectedRank(rank);
-			const res = await getAllOfficersMinDataFromRank(rank);
+		if (rank && rank !== 'NONE') {
+			setSelectedRank((prev) => rank);
+			const res = await getAllOfficers({ rank: rank }, ['name', 'bd', 'rank']);
 			if (res.success) {
 				setOffrs(res.data);
 			}
 		}
 	};
+
 	const handleSelectOfficer = (id: string) => {
 		const officer = offrs.find((offr) => offr._id === id);
 		if (officer) {
-			setSelectedOffr(officer);
+			setSelectedOffr((_) => officer);
 		}
 	};
 
@@ -50,6 +51,7 @@ export default function MessingPage() {
 		data[index][event.target.name] = event.target.value;
 		setInputFields(data);
 	};
+
 	const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 		const payLoad = prepareDailyMessingPayload(inputFields);
@@ -156,7 +158,7 @@ export default function MessingPage() {
 					<select
 						className="select select-bordered w-full"
 						value={month}
-						onChange={(e) => setMonth(e.target.value)}
+						onChange={(e) => setMonth((_) => e.target.value)}
 					>
 						{Object.keys(Month).map((key, i) => (
 							<option className="optionStyle" key={i} value={key}>

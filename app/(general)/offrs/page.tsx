@@ -1,15 +1,14 @@
-import React from "react";
-import Link from "next/link";
-import { CiMemoPad } from "react-icons/ci";
-import { GiShieldDisabled } from "react-icons/gi";
-import { Rank } from "@/utilities/enums";
-import { OfficerType } from "@/utilities/types";
-import { getAllOfficers } from "@/lib/offr";
+import React from 'react';
+import Link from 'next/link';
+import { CiMemoPad } from 'react-icons/ci';
+import { GiShieldDisabled } from 'react-icons/gi';
+import { Rank } from '@/utilities/enums';
+import { OfficerType } from '@/utilities/types';
+import { getAllOfficers } from '@/lib/offr';
 
 const OfficersListPage = async () => {
 	let offrs: OfficerType[] = [];
 	const res = await getAllOfficers();
-
 	if (res.success) {
 		offrs = res.data;
 	}
@@ -49,7 +48,7 @@ const OfficersListPage = async () => {
 										<Link href={`/offrs/${offr._id}`} className="tooltip mx-2" data-tip="Details">
 											<CiMemoPad size={24} />
 										</Link>
-										<Link href={"#"} className="tooltip mx-2" data-tip="Make Status Inactive">
+										<Link href={'#'} className="tooltip mx-2" data-tip="Make Status Inactive">
 											<GiShieldDisabled size={24} color="red" />
 										</Link>
 									</td>
