@@ -16,7 +16,7 @@ export async function getAllOfficers(filter = {}, fields = []): Promise<Response
 		let fdStr = `fields=${fields.join('_')}`;
 		url = url + fdStr;
 	}
-	console.log(url);
+	// console.log(url);
 	const res = await fetch(url, { cache: 'no-store' });
 	if (!res.ok) {
 		throw new Error('Error fetching data in front end');

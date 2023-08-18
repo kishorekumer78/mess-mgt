@@ -17,9 +17,9 @@ export type ResponseType = {
 };
 
 export type ContributionType = {
-	_id: string | any;
-	type: string;
-	amount: number;
+	_id?: string | any;
+	type?: string;
+	amount?: number;
 };
 
 export type DailyMessingType = {

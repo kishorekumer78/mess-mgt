@@ -1,10 +1,7 @@
 'use client';
-import 'react-datepicker/dist/react-datepicker.css';
-import React, { useEffect, useState } from 'react';
-import 'react-datepicker/dist/react-datepicker.css';
-import { DailyMessingType, OfficerType } from '@/utilities/types';
-import { Month, Rank } from '@/utilities/enums';
+import { addDailyMessings, getDailyMessings } from '@/lib/daily-messing';
 import { getAllOfficers } from '@/lib/offr';
+import { Month, Rank } from '@/utilities/enums';
 import {
 	calculateTotalBill,
 	findLastDayOfMOnth,
@@ -12,7 +9,9 @@ import {
 	incrementDay,
 	prepareDailyMessingPayload
 } from '@/utilities/misc';
-import { addDailyMessings, getDailyMessings } from '@/lib/daily-messing';
+import { DailyMessingType, OfficerType } from '@/utilities/types';
+import React, { useEffect, useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
 import toast from 'react-hot-toast';
 
 export default function MessingPage() {
@@ -34,13 +33,15 @@ export default function MessingPage() {
 			setSelectedRank((prev) => rank);
 			const res = await getAllOfficers({ rank: rank }, ['name', 'bd', 'rank']);
 			if (res.success) {
-				setOffrs(res.data);
+				setOffrs((_) => [...res.data]);
 			}
 		}
 	};
 
 	const handleSelectOfficer = (id: string) => {
 		const officer = offrs.find((offr) => offr._id === id);
+		console.log(officer);
+
 		if (officer) {
 			setSelectedOffr((_) => officer);
 		}
@@ -131,6 +132,9 @@ export default function MessingPage() {
 						value={selectedOffr._id}
 						onChange={(e) => handleSelectOfficer(e.target.value)}
 					>
+						<option className="optionStyle" value={''}>
+							--Select Officer--
+						</option>
 						{offrs.map((offr, i) => (
 							<option className="optionStyle" key={i} value={offr._id}>
 								{offr.name}
@@ -145,10 +149,13 @@ export default function MessingPage() {
 						value={year}
 						onChange={(e) => setYear(Number(e.target.value))}
 					>
-						<option className="optionStyle" key={0} value={currentYear}>
+						<option className="optionStyle" value={0}>
+							--Select Year--
+						</option>
+						<option className="optionStyle" value={currentYear}>
 							{currentYear}
 						</option>
-						<option className="optionStyle" key={1} value={prevYear}>
+						<option className="optionStyle" value={prevYear}>
 							{prevYear}
 						</option>
 					</select>
@@ -173,6 +180,9 @@ export default function MessingPage() {
 					</button>
 				</div>
 			</div>
+			{/* {JSON.stringify(offrs)}
+			<br />
+			{JSON.stringify(selectedOffr)} */}
 			<div className="flex gap-2 w-full">
 				<div className="w-3/5 p-5 mt-5 rounded-lg bg-gray-100">
 					<form>

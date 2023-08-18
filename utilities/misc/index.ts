@@ -1,5 +1,10 @@
-import { Month } from "../enums";
-import { DailyMessingType } from "../types";
+import { Month } from '../enums';
+import { DailyMessingType } from '../types';
+
+export function findSumOfArray(numArray: []) {
+	const sum = numArray.reduce((total, item) => total + item, 0);
+	return sum;
+}
 
 export function formatDate(date: Date): string {
 	let year = date.getFullYear();

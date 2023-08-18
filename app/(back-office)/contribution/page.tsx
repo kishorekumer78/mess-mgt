@@ -1,36 +1,39 @@
-"use client";
-import { addNewContribution, getAllContributions, updateContribution } from "@/lib/contribution.helper";
-import { ContributionType, ResponseType } from "@/utilities/types";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
-import { CiEdit } from "react-icons/ci";
+'use client';
+import { addNewContribution, deleteContribution, getAllContributions, updateContribution } from '@/lib/contribution';
+import { ContributionType, ResponseType } from '@/utilities/types';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
+import { AiFillDelete } from 'react-icons/ai';
+import { CiEdit } from 'react-icons/ci';
 
 export default function ContributionPage(): React.ReactElement {
 	const [contributionList, setContributionList] = useState<ContributionType[]>([]);
-	const [contribution, setContribution] = useState<ContributionType>({
-		_id: "",
-		amount: 0,
-		type: ""
-	});
-	const [inputType, setInputType] = useState("");
-
+	const [contribution, setContribution] = useState<ContributionType>({ amount: 0, type: '' });
+	const [inputType, setInputType] = useState<'' | 'ADD' | 'EDIT'>('');
+	const [total, setTotal] = useState<number>(0);
+	//TODO: Create modal for Delete confirmation
 	useEffect(() => {
 		(async () => {
 			const res: ResponseType = await getAllContributions();
 			if (res.success) {
 				setContributionList(res.data);
-				toast.success(res.message);
 			}
 		})();
 	}, []);
+	useEffect(() => {
+		setTotal((_) => {
+			const sum = contributionList.reduce((val, item) => val + item.amount, 0);
+			return sum;
+		});
+	}, [contributionList]);
 
-	const handleEdit = (con: ContributionType) => {
-		setInputType("EDIT");
-		setContribution(con);
+	const handleEdit = (con: ContributionType): void => {
+		setInputType((_) => 'EDIT');
+		setContribution((_) => con);
 	};
-	const resetInputType = () => {
-		setInputType("ADD");
-		setContribution({ _id: "", amount: 0, type: "" });
+	const resetInputType = (): void => {
+		setInputType('ADD');
+		setContribution((_) => ({ amount: 0, type: '' }));
 	};
 
 	const handleAdd = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -40,9 +43,9 @@ export default function ContributionPage(): React.ReactElement {
 
 		//On success reset contribution state, add new data to contributionList state and show success message
 		if (res.success) {
-			setContribution({ _id: "", amount: 0, type: "" });
-			setContributionList([...contributionList, res.data]);
-			setInputType("");
+			setContribution((_) => ({ amount: 0, type: '' }));
+			setContributionList((prevState) => [...prevState, res.data]);
+			setInputType('');
 			toast.success(res.message);
 		} else {
 			toast.error(res.message);
@@ -56,21 +59,31 @@ export default function ContributionPage(): React.ReactElement {
 
 		//On success reset contribution state, add new data to contributionList state and show success message
 		if (res.success) {
-			setContribution({ _id: "", amount: 0, type: "" });
-			setContributionList(
-				contributionList.map((item) => {
+			setContribution((_) => ({ amount: 0, type: '' }));
+			setContributionList((prevState) => {
+				let updatedList = prevState.map((item) => {
 					if (item._id === res.data._id) {
 						return { ...res.data };
 					} else {
 						return item;
 					}
-				})
-			);
-			setInputType("");
+				});
+				return updatedList;
+			});
+			setInputType((_) => '');
 			toast.success(res.message);
 		} else {
 			toast.error(res.message);
-			//console.log(res.data); //TODO remove
+			console.log(res.data); //TODO remove
+		}
+	};
+	const handleDelete = async (id: string | any) => {
+		const res = await deleteContribution(id);
+		if (res.success) {
+			setContributionList((prev) => [...prev.filter((x) => x._id !== res.data._id)]);
+			toast.success(res.message);
+		} else {
+			toast.error(res.message);
 		}
 	};
 	return (
@@ -86,10 +99,10 @@ export default function ContributionPage(): React.ReactElement {
 					<table className="table">
 						<thead>
 							<tr>
-								<th></th>
+								<th>S/N</th>
 								<th className="text-center">Type</th>
 								<th className="text-center">Amount</th>
-								<th className="text-center"></th>
+								<th className="text-center">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -107,9 +120,22 @@ export default function ContributionPage(): React.ReactElement {
 											>
 												<CiEdit size={24} />
 											</button>
+											<button
+												className="tooltip mx-2"
+												data-tip="Edit Data"
+												onClick={() => handleDelete(cont._id)}
+											>
+												<AiFillDelete size={24} className="text-error" />
+											</button>
 										</td>
 									</tr>
 								))}
+							<tr>
+								<td></td>
+								<th className="text-end">Total</th>
+								<th className="text-center">{total}</th>
+								<td></td>
+							</tr>
 
 							{/* <tr>
 								<td></td>
@@ -123,7 +149,7 @@ export default function ContributionPage(): React.ReactElement {
 			{inputType && (
 				<div className="w-2/6 border border-gray-300 rounded-lg p-5 mt-5">
 					<h3 className="font-bold mb-3 text-center">
-						{inputType === "ADD" ? "New Contribution Item" : "Edit Contribution Item"}
+						{inputType === 'ADD' ? 'New Contribution Item' : 'Edit Contribution Item'}
 					</h3>
 					<form>
 						<div className="form-control w-full">
@@ -133,7 +159,7 @@ export default function ContributionPage(): React.ReactElement {
 								placeholder="Name"
 								className="input input-bordered w-full "
 								value={contribution.type}
-								onChange={(e) => setContribution({ ...contribution, type: e.target.value })}
+								onChange={(e) => setContribution((prev) => ({ ...prev, type: e.target.value }))}
 							/>
 						</div>
 						<div className="form-control w-full">
@@ -144,15 +170,12 @@ export default function ContributionPage(): React.ReactElement {
 								className="input input-bordered w-full "
 								value={contribution.amount}
 								onChange={(e) =>
-									setContribution({
-										...contribution,
-										amount: Number(e.target.value)
-									})
+									setContribution((prev) => ({ ...prev, amount: Number(e.target.value) }))
 								}
 							/>
 						</div>
 						<div className="text-center mt-5">
-							{inputType === "ADD" ? (
+							{inputType === 'ADD' ? (
 								<button className="btn btn-primary w-full" onClick={(e) => handleAdd(e)}>
 									Add
 								</button>
@@ -164,7 +187,6 @@ export default function ContributionPage(): React.ReactElement {
 						</div>
 					</form>
 					{/* TODO: Remove */}
-					{JSON.stringify(contribution)}
 				</div>
 			)}
 		</div>
