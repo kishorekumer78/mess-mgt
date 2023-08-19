@@ -1,15 +1,14 @@
-import Link from 'next/link';
-import React from 'react';
-import { GiMeal, GiShieldDisabled } from 'react-icons/gi';
-import CircleDisplay from './CircleDisplay';
 import { getFirstDateOfMonth, getLastDateOfMonth } from '@/utilities/misc';
 import { OfficerType } from '@/utilities/types';
-import { getAllOfficers } from '@/lib/offr';
+import Link from 'next/link';
+import { GiMeal, GiShieldDisabled } from 'react-icons/gi';
+import CircleDisplay from './CircleDisplay';
 
 export default async function BillList({ month, year }) {
 	// bring all data with req field only
 	// show in the status box 4 circles and based on billStatus show filled
 	// links to Daily messing generation,Bill Generation,
+
 	const firstDay: Date = getFirstDateOfMonth(month, year);
 	const lastDay: Date = getLastDateOfMonth(month, year);
 	let offrList: OfficerType[] = [];
